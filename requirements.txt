@@ -1,0 +1,8 @@
+discord.py
+python-dotenv
+langchain-core
+langchain-groq
+langchain-google-community
+gspread
+google-auth
+google-api-python-client

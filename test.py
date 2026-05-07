@@ -28,20 +28,21 @@ test_sheets()
 
 
 from google.oauth2.service_account import Credentials
-from googleapiclient.discovery import build
+from tools.calendar import get_service
 
 def test_calendar():
-    creds = Credentials.from_service_account_file(
-        "credentials.json",
-        scopes=["https://www.googleapis.com/auth/calendar.readonly"]
-    )
-    service = build("calendar", "v3", credentials=creds)
+    service = get_service()
     
-    # List calendars accessible to the service account
-    calendars = service.calendarList().list().execute()
-    print("✅ Connected to Calendar!")
-    for cal in calendars.get("items", []):
-        print("📅 Calendar found:", cal["summary"])
+    event = {
+        'summary': 'Test Tithe Reminder: 500',
+        'start': {'dateTime': '2026-05-08T09:00:00', 'timeZone': 'Asia/Jakarta'},
+        'end': {'dateTime': '2026-05-08T09:30:00', 'timeZone': 'Asia/Jakarta'}
+    }
+    
+    result = service.events().insert(calendarId='primary', body=event).execute()
+    print("✅ Event created:", result.get('summary'))
+    print("🔗 Link:", result.get('htmlLink'))
+
 test_calendar()
 
 from langchain_groq import ChatGroq

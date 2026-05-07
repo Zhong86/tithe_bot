@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import create_agent
-from langchain_core.prompts import ChatPromptTemplate
 from tools import log_tithe, get_tithes, add_events, update_event, list_events
 from datetime import date, timedelta
 import os

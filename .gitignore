@@ -2,6 +2,6 @@
 credentials.json
 .venv
 __pycache__/
-oauth_credentials.json
+google_oauth_credentials.json
 get_credentials.py
 token.pickle

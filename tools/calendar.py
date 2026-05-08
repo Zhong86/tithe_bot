@@ -27,6 +27,10 @@ def get_service():
 @tool
 def add_events(amount: str, date: str) -> str: 
     """Add a Google Calendar reminder event for a tithe. amount is a number string like '500'. date is in YYYY-MM-DD format like '2026-05-07'"""
+    import re
+    if not re.match(r'^\d{4}-\d{2}-\d{2}$', date):
+        return f"Error: date must be in YYYY-MM-DD format, got: '{date}'"
+    
     service = get_service()
     event = {
         'summary': f'Tithe reminder: {amount}',
@@ -35,7 +39,7 @@ def add_events(amount: str, date: str) -> str:
             'timeZone': 'Asia/Jakarta'
         }, 
         'end': {                                   
-            'dateTime': f'{date}T23:30:00',
+            'dateTime': f'{date}T09:30:00',
             'timeZone': 'Asia/Jakarta'
         }
     }
@@ -51,6 +55,7 @@ def add_events(amount: str, date: str) -> str:
 
     return f"Created tithe reminder event: {amount} on {date} — {result.get('htmlLink')}" 
 
+@tool
 def update_event(date: str, new_amount: str = None, new_date: str = None, mark_done: bool = False) -> str:
     """Update an existing tithe calendar event. Find event by its original date in YYYY-MM-DD format.
     Optionally update the amount, reschedule to a new_date, or mark it as done."""

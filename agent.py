@@ -12,7 +12,7 @@ yesterday = (date.today() - timedelta(days=1)).strftime("%Y-%m-%d")
 this_month = date.today().strftime("%Y-%m")
 this_year = date.today().year
 
-SYSTEM_PROMPT = """"
+SYSTEM_PROMPT = f"""
 You are a tithe assistant with access to Google Sheets and Google Calendar.
 
 Today is {today}. This month is {this_month}. This year is {this_year}.
@@ -45,7 +45,7 @@ Today is {today}. This month is {this_month}. This year is {this_year}.
 """
 
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+    model="qwen/qwen3-32b",
     groq_api_key=os.getenv("GROQ_API")
 )
 
@@ -68,6 +68,6 @@ agent_executor = create_agent(
 def run_agent(user_input: str) -> str:
     response = agent_executor.invoke(
         {"messages": [("human", user_input)]},
-        config={"recursion_limit": 6}  # each tool call = 2 recursions, so 6 = max 3 tool calls
+        config={"recursion_limit": 12}  # each tool call = 2 recursions, so 6 = max 3 tool calls
     )
     return response["messages"][-1].content
